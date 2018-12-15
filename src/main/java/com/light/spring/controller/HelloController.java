@@ -1,5 +1,6 @@
 package com.light.spring.controller;
 
+import com.light.spring.Dao.RedisDao;
 import com.light.spring.Entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ public class HelloController {
      * 测试hello
      * @return
      */
+    private RedisDao redisDao;
     @GetMapping(value = "/")
     public String  login(){
         return "login";
@@ -36,6 +38,7 @@ public class HelloController {
         User user=new User();
         user.setUsername(username);
         user.setPassword(password);
+        redisDao.set("username",username);
         session.setAttribute("user",user);
         return "index";
     }
