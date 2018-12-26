@@ -29,7 +29,7 @@ public class testcontroller  {
         redisDao.set(Name,"1");
         return "yes";
     }
-    @PostMapping ("/helloworld")
+    @GetMapping ("/helloworld")
     public PageInfo<Department> hello2(Integer PageNum,Integer PageSize){
 
         PageHelper.startPage(PageNum,PageSize);

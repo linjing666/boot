@@ -35,7 +35,7 @@ public class HelloController {
         User user=new User();
         user.setUsername(username);
         user.setPassword(password);
-        redisDao.set(username,"1");
+//        redisDao.set(username,"1");
         session.setAttribute("user",user);
         return "index";
     }

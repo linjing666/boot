@@ -1,67 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html >
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pagination.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.css">
-    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/scripts/jquery.pagination.js"></script>
+
 </head>
 <body>
-<div id="content" class="container"></div>
-<div class="container">
-    <div class="panel col-sm-10 panel-default">
-        <table id="tabletest"></table>
-    </div>
+<div>
+    <table class="table">
+        <thead><tr><th>学号</th><th>姓名</th><th>部门</th></tr></thead>
+        <tbody id="content"></tbody>
+    </table>
+    <div class="m-style M-box4"></div>
 </div>
 <script>
-    $('#tabletest').bootstrapTable({
-        columns: [{
-            field: 'id',
-            title: '用户名',
-        }, {
-            field: 'name',
-            title: '姓名',
-        },{
-            field: 'descr',
-            title: '描述',
-        }
-        ],
-        method: 'post',
-        showToggle:true,
-        showRefresh: true,
-        contentType: "application/x-www-form-urlencoded",
-        locale:'zh-CN',//中文支持
-        //页面需要展示的列，后端交互对象的属性
-        pagination: true,  //开启分页
-        sidePagination: 'server',
-
-        url: 'http://localhost:9090/helloword',
-        PageNum: 1,//默认加载页
-        PageSize: 10,//每页数据
-        pageList: [5,10,15,20],//可选的每页数据
-        queryParamsType:'',//queryParamsType的默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
-        //设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber */
-        queryParams: function (params) {
-            return {
-                PageNum:params.PageNum,
-                PageSize:params.PageSize,
-            }
-            return params;
-        },//请求服务器数据时的参数
-
-        // responseHandler:function(res){
-        //     //在ajax获取到数据，渲染表格之前，修改数据源
-        //     var nres = [];
-        //     nres.push({total:res.total,rows:res.list});
-        //     return nres[0];
-        // }
+    var tbody="";
+    $(function () {
+        var data = {
+            PageNum: 1,
+            PageSize: 5,
+        };
+        get(data);
     })
-
+    $('.M-box4').pagination({
+        pageCount: 50,
+        jump: true,
+        callback: function (api) {
+            var data = {
+                PageNum: api.getCurrent(),
+                PageSize: 5,
+            };
+            get(data);
+        }
+    });
+    function get(data) {
+        $.getJSON('http://localhost:9090/helloworld', data, function (data) {
+            console.log(data);
+            var list=new Array();
+            list=data.list;
+            for(var i=0;i<list.length;i++){
+                var trs="";
+                trs += "<tr><td>" + list[i].id + "</td> <td>" + list[i].name+ "</td> <td>" + list[i].descr+ "</td></tr>";
+                tbody+=trs;
+            }
+            $("#content").html(tbody);
+            tbody="";
+        });
+    }
 </script>
 </body>
 
