@@ -20,29 +20,40 @@
 </div>
 <script>
     var tbody="";
+    var count;
     $(function () {
-        var data = {
+        var date = {
             PageNum: 1,
             PageSize: 5,
         };
-        get(data);
+        get(date);
+        $('.M-box4').pagination({
+            pageCount: count,
+            count:3,
+            jump: true,
+            isHide:true,
+            coping:true,
+            homePage:'首页',
+            endPage:'末页',
+            callback: function (api) {
+                var data = {
+                    PageNum: api.getCurrent(),
+                    PageSize: 5,
+                };
+                get(data);
+            }
+        });
     })
-    $('.M-box4').pagination({
-        pageCount: 50,
-        jump: true,
-        callback: function (api) {
-            var data = {
-                PageNum: api.getCurrent(),
-                PageSize: 5,
-            };
-            get(data);
-        }
-    });
+
     function get(data) {
-        $.getJSON('http://localhost:9090/helloworld', data, function (data) {
-            console.log(data);
+        $.ajaxSettings.async = false;
+        $.getJSON('http://localhost:9090/helloworld', data, function (res) {
+            console.log(res);
+
             var list=new Array();
-            list=data.list;
+            count=res.pages;
+            console.log(count);
+            list=res.list;
             for(var i=0;i<list.length;i++){
                 var trs="";
                 trs += "<tr><td>" + list[i].id + "</td> <td>" + list[i].name+ "</td> <td>" + list[i].descr+ "</td></tr>";
@@ -50,6 +61,7 @@
             }
             $("#content").html(tbody);
             tbody="";
+
         });
     }
 </script>
