@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>导航</title>
+    <script src="/scripts/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="/css/daohang.css">
+    <script src="/scripts/bootstrap.min.js"></script>
+    <script src="/scripts/jquery-nav.js"></script>
+</head>
+<style>
+    div{height: 100%;width: 100%;text-align: center}
+    .bottom_xf{
+
+        overflow:hidden;
+        position: fixed; right: 400px;bottom: 400px;
+        bottom:0;margin-right: auto}
+</style>
+<body>
+<div id="tab" >
+    <ul class="f-nav" id='f-nav6'>
+        <li onclick="change(this)" value="/index">首页</li>
+        <li onclick="change(this)" value="/test"><a>分页一</a></li>
+        <li >分页二</li>
+        <li >分页三</li>
+        <li >分页四</li>
+        <li ></li><li ></li>
+        <li ></li><li ></li><li ></li>
+        <li ></li><li ></li><li ></li><li ></li>
+        <li ></li>
+        <li style="margin-right: auto">个人中心</li>
+        <li id="logout" onclick="logout()">退出</li>
+
+
+        <div class='sideline'></div>
+    </ul>
+</div>
+<div id="html"></div>
+<button class="btn-primary bottom_xf" href="#tab" onclick=" location.href = '#top';">返回顶部</button>
+<script type="text/javascript">
+    $('#f-nav6').tooltip({
+        type: 'scaleChange'
+    });
+    $(function () {
+        $("#html").load("/shopping");
+    })
+    function change(obj) {
+        var html=$(obj).attr("value");
+        $("#html").load(html);
+    }
+    function logout() {
+
+    }
+</script>
+</body>
+</html>
